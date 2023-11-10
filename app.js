@@ -3,7 +3,6 @@ require('dotenv').config();
 const TelegramBot = require('node-telegram-bot-api');
 const express = require('express');
 const bodyParser = require('body-parser');
-const bodyParser = require('body-parser');
 const socketIo = require('socket.io');
 
 const token = process.env.BOT_TOKEN;
