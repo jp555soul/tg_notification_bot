@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Wizdom</title>
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            if (!("Notification" in window)) {
+                alert("This browser does not support desktop notification");
+            }
+
+            // Function to handle new pinned messages
+            const handlePinnedMessage = (data) => {
+                const notificationText = `Pinned Message: ID ${data.messageId} - Text: ${data.messageText}`;
+                document.body.innerHTML += `<p>${notificationText}</p>`;
+
+                if (Notification.permission === "granted") {
+                    new Notification(notificationText);
+                }
+            };
+
+            // Request permission for notifications
+            const requestNotificationPermission = () => {
+                Notification.requestPermission().then((permission) => {
+                    if (permission === "granted") {
+                        console.log("Notification permission granted.");
+                        // Permission was granted
+                        // You can now create notifications
+                    } else if (permission === "denied") {
+                        console.log("Notification permission denied.");
+                        // Permission was denied
+                        // You can inform the user that they will not receive notifications
+                    }
+                });
+            };
+
+            // Check if the user has granted permission for notifications
+            if (Notification.permission === "granted") {
+                // Permission was already granted
+            } else if (Notification.permission !== "denied") {
+                // Permission has not been asked yet or was previously denied
+                requestNotificationPermission();
+            }
+
+            // Set up the socket connection for real-time updates
+            const socket = io();
+            socket.on('pinned_message', handlePinnedMessage);
+        });
+    </script>
+</head>
+
+<body>
+    <h1>Wizdom</h1>
+</body>
+
+</html>
