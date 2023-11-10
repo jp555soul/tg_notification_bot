@@ -4,6 +4,7 @@ const TelegramBot = require('node-telegram-bot-api');
 const express = require('express');
 const bodyParser = require('body-parser');
 const socketIo = require('socket.io');
+const cors = require('cors');
 
 const token = process.env.BOT_TOKEN;
 const app = express();
@@ -12,10 +13,11 @@ const bot = new TelegramBot(token);
 const server = require('http').Server(app);
 const io = socketIo(server);
 
-bot.setWebHook(process.env.APP_URL + bot.token);
+bot.setWebHook(`${process.env.APP_URL}/${token}`);
 
 app.use(express.static('public'));  
 app.use(bodyParser.json());
+app.use(cors()); 
 
 bot.on('pinned_message', (msg) => {
     const chatId = msg.chat.id;
@@ -38,7 +40,7 @@ app.post(`/${token}`, (req, res) => {
     res.sendStatus(200);
 });
 
-app.listen(port, () => {
-    console.log(`Express server is listening on ${port}`);
+server.listen(port, () => {
+    console.log(`Server is listening on ${port}`);
 });
 
