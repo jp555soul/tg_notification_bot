@@ -14,7 +14,7 @@ bot.setWebHook(process.env.APP_URL + bot.token);
 app.use(bodyParser.json());
 
 app.get('/', (req, res) => {
-    res.status(200).json({ message: "Wiz! Wiz! That's the way" });
+    res.status(200).send("Wiz! Wiz! That's the way");
 });
 
 app.post(`/${token}`, (req, res) => {
